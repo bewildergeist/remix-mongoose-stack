@@ -19,7 +19,6 @@ npx create-remix@latest --template bewildergeist/remix-mongoose-stack
 3. Set up a new project [on Heroku][heroku-dashboard].
 4. Copy your [API key from Heroku][heroku-api-key] and [add it as a secret][gh-secret] to your repository
 5. Edit the `.github/workflows/main.yml` file:
-   - Change "main" to "master" if that is the name of your default branch
    - Enter your Heroku app name in the `heroku_app_name` setting
    - Enter the email address you've used on Heroku to the `heroku_email` setting
 

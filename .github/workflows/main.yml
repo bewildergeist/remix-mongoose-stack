@@ -3,7 +3,8 @@ name: Deploy
 on:
   push:
     branches:
-      - main # Change this to "master" if that is the name of your default branch
+      - main
+      - master
 
 jobs:
   build:
