@@ -1,31 +1,33 @@
+import { useLoaderData, Link } from "@remix-run/react";
+import connectDb from "~/db/connectDb.server.js";
+
+export async function loader() {
+  const db = await connectDb();
+  const books = await db.models.Book.find();
+  return books;
+}
+
 export default function Index() {
+  const books = useLoaderData();
+
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
+    <div>
+      <h1 className="text-2xl font-bold mb-4">Remix + Mongoose</h1>
+      <h2 className="text-lg font-bold mb-3">
+        Here are a few of my favorite books:
+      </h2>
+      <ul className="ml-5 list-disc">
+        {books.map((book) => {
+          return (
+            <li key={book._id}>
+              <Link
+                to={`/books/${book._id}`}
+                className="text-blue-600 hover:underline">
+                {book.title}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
