@@ -12,8 +12,8 @@ export default function Index() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Remix + Mongoose</h1>
-      <h2 className="text-lg font-bold mb-3">
+      <h1 className="mb-4 text-2xl font-bold">Remix + Mongoose</h1>
+      <h2 className="mb-3 text-lg font-bold">
         Here are a few of my favorite books:
       </h2>
       <ul className="ml-5 list-disc">
@@ -22,7 +22,8 @@ export default function Index() {
             <li key={book._id}>
               <Link
                 to={`/books/${book._id}`}
-                className="text-blue-600 hover:underline">
+                className="text-blue-600 hover:underline"
+              >
                 {book.title}
               </Link>
             </li>

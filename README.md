@@ -1,6 +1,6 @@
 # A Remix stack with Mongoose integration
 
-This is a basic ["custom stack" template][custom-stack] that integrates [Remix][remix] with [Mongoose][mongoose] (and thereby [MongoDB][mongodb]), and configures [Tailwind CSS][tailwindcss].
+This is a basic ["custom stack" template][custom-stack] that integrates [Remix][remix] with [Mongoose][mongoose] (and thereby [MongoDB][mongodb]), and configures [Tailwind CSS][tailwindcss] and [Prettier][prettier].
 
 ## Installation
 
@@ -30,6 +30,7 @@ This starts your app in development mode, rebuilding assets on file changes.
 [tailwindcss]: https://tailwindcss.com
 [mongodb]: https://www.mongodb.com/atlas
 [mongoose]: https://mongoosejs.com
+[prettier]: https://prettier.io
 [remix]: https://remix.run
 [custom-stack]: https://remix.run/docs/en/v1/pages/stacks#custom-stacks
-[vs-code-git-init]: https://code.visualstudio.com/docs/editor/versioncontrol#_initialize-a-repository
+[vs-code-git-init]: https://code.visoualstudio.com/docs/editor/versioncontrol#_initialize-a-repository

@@ -17,7 +17,7 @@ export default function BookPage() {
   const book = useLoaderData();
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">{book.title}</h1>
+      <h1 className="mb-4 text-2xl font-bold">{book.title}</h1>
       <code>
         <pre>{JSON.stringify(book, null, 2)}</pre>
       </code>
@@ -39,7 +39,7 @@ export function CatchBoundary() {
 
 export function ErrorBoundary({ error }) {
   return (
-    <h1 className="text-red-500 font-bold">
+    <h1 className="font-bold text-red-500">
       {error.name}: {error.message}
     </h1>
   );

@@ -31,12 +31,12 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="bg-slate-100 text-slate-800 font-sans p-4">
-        <header className="pb-3 mb-4 border-b-2">
-          <Link to="/" className="hover:underline text-blue-600">
+      <body className="bg-slate-100 p-4 font-sans text-slate-800">
+        <header className="mb-4 border-b-2 pb-3">
+          <Link to="/" className="text-blue-600 hover:underline">
             Home
           </Link>
-          <Link to="/books/new" className="ml-3 hover:underline text-blue-600">
+          <Link to="/books/new" className="ml-3 text-blue-600 hover:underline">
             New book
           </Link>
         </header>

@@ -1,0 +1,6 @@
+build
+public/build
+.env
+.env.example
+app/tailwind.css
+package-lock.json

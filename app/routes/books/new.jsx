@@ -20,9 +20,9 @@ export default function CreateBook() {
   const actionData = useActionData();
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Create book</h1>
+      <h1 className="mb-4 text-2xl font-bold">Create book</h1>
       <Form method="post">
-        <label htmlFor="title" className="block font-semibold mb-1">
+        <label htmlFor="title" className="mb-1 block font-semibold">
           Title:
         </label>
         <input
@@ -36,14 +36,15 @@ export default function CreateBook() {
           }
         />
         {actionData?.errors.title && (
-          <p className="text-red-500 mt-1 mb-0">
+          <p className="mt-1 mb-0 text-red-500">
             {actionData.errors.title.message}
           </p>
         )}
         <br />
         <button
           type="submit"
-          className="mt-3 p-2 bg-blue-600 hover:bg-blue-700 transition-colors text-white rounded">
+          className="mt-3 rounded bg-blue-600 p-2 text-white transition-colors hover:bg-blue-700"
+        >
           Save
         </button>
       </Form>

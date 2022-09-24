@@ -11,9 +11,11 @@
     "dev": "run-p \"dev:*\"",
     "dev:css": "npm run generate:css -- --watch",
     "dev:remix": "remix dev",
+    "format": "prettier --write .",
     "generate:css": "npx tailwindcss -o ./app/tailwind.css",
     "start": "remix-serve build"
   },
+  "prettier": {},
   "dependencies": {
     "@remix-run/node": "^1.7.2",
     "@remix-run/react": "^1.7.2",
@@ -27,7 +29,10 @@
     "@remix-run/dev": "^1.7.2",
     "@remix-run/eslint-config": "^1.7.2",
     "eslint": "^8.24.0",
-    "npm-run-all": "^4.1.5"
+    "eslint-config-prettier": "^8.5.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.7.1",
+    "prettier-plugin-tailwindcss": "^0.1.13"
   },
   "engines": {
     "node": ">=14"
