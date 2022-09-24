@@ -18,7 +18,7 @@ if (!MONGODB_URL) {
 // We reuse any existing Mongoose db connection to avoid creating multiple
 // connections in dev mode when Remix "purges the require cache" when reloading
 // on file changes.
-export default async function connectDb() {
+export default function connectDb() {
   // Reuse the existing Mongoose connection if we have one...
   // https://mongoosejs.com/docs/api/connection.html#connection_Connection-readyState
   if (mongoose.connection.readyState > 0) {
@@ -45,7 +45,7 @@ export default async function connectDb() {
   });
 
   // ...and create a new connection:
-  await mongoose.connect(MONGODB_URL, {
+  mongoose.connect(MONGODB_URL, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
   });

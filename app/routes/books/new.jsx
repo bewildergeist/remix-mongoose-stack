@@ -4,7 +4,7 @@ import connectDb from "~/db/connectDb.server.js";
 
 export async function action({ request }) {
   const form = await request.formData();
-  const db = await connectDb();
+  const db = connectDb();
   try {
     const newBook = await db.models.Book.create({ title: form.get("title") });
     return redirect(`/books/${newBook._id}`);
