@@ -45,10 +45,7 @@ export default function connectDb() {
   });
 
   // ...and create a new connection:
-  mongoose.connect(MONGODB_URL, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  });
+  mongoose.connect(MONGODB_URL);
 
   // "Models are always scoped to a single connection."
   // https://mongoosejs.com/docs/connections.html#multiple_connections
