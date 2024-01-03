@@ -11,7 +11,7 @@ export async function action({ request }) {
   } catch (error) {
     return json(
       { errors: error.errors, values: Object.fromEntries(form) },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }

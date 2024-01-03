@@ -5,10 +5,10 @@ export default function handleRequest(
   request,
   responseStatusCode,
   responseHeaders,
-  remixContext
+  remixContext,
 ) {
   let markup = renderToString(
-    <RemixServer context={remixContext} url={request.url} />
+    <RemixServer context={remixContext} url={request.url} />,
   );
 
   responseHeaders.set("Content-Type", "text/html");
