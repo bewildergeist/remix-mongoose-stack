@@ -1,6 +1,10 @@
-import { useLoaderData, useCatch } from "@remix-run/react";
+import {
+  useLoaderData,
+  useRouteError,
+  isRouteErrorResponse,
+} from "@remix-run/react";
 import { json } from "@remix-run/node";
-import connectDb from "~/db/connectDb.server.js";
+import connectDb from "../db/connectDb.server.js";
 
 export async function loader({ params }) {
   const db = connectDb();
@@ -25,22 +29,21 @@ export default function BookPage() {
   );
 }
 
-export function CatchBoundary() {
-  const caught = useCatch();
-  return (
-    <div>
-      <h1>
-        {caught.status} {caught.statusText}
-      </h1>
-      <h2>{caught.data}</h2>
-    </div>
-  );
-}
+export function ErrorBoundary() {
+  const error = useRouteError();
 
-export function ErrorBoundary({ error }) {
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        <h1>{`${error.status} ${error.statusText}`}</h1>
+        <h2>{error.data}</h2>
+      </div>
+    );
+  }
+
   return (
     <h1 className="font-bold text-red-500">
-      {error.name}: {error.message}
+      {error?.name}: {error?.message}
     </h1>
   );
 }

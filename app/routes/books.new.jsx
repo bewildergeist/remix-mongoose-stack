@@ -1,6 +1,6 @@
 import { Form, useActionData } from "@remix-run/react";
 import { redirect, json } from "@remix-run/node";
-import connectDb from "~/db/connectDb.server.js";
+import connectDb from "../db/connectDb.server.js";
 
 export async function action({ request }) {
   const form = await request.formData();

@@ -7,7 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import styles from "~/tailwind.css";
+import styles from "./tailwind.css";
 
 export const links = () => [
   {
@@ -17,17 +17,15 @@ export const links = () => [
 ];
 
 export function meta() {
-  return {
-    charset: "utf-8",
-    title: "Remix + MongoDB",
-    viewport: "width=device-width,initial-scale=1",
-  };
+  return [{ title: "Remix + Mongoose" }];
 }
 
 export default function App() {
   return (
     <html lang="en">
       <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
