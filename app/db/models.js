@@ -10,7 +10,7 @@ const bookSchema = new Schema(
       minLength: [3, "That's too short"],
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const models = [

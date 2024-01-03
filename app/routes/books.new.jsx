@@ -1,6 +1,6 @@
 import { Form, useActionData } from "@remix-run/react";
 import { redirect, json } from "@remix-run/node";
-import connectDb from "~/db/connectDb.server.js";
+import connectDb from "../db/connectDb.server.js";
 
 export async function action({ request }) {
   const form = await request.formData();
@@ -11,7 +11,7 @@ export async function action({ request }) {
   } catch (error) {
     return json(
       { errors: error.errors, values: Object.fromEntries(form) },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }

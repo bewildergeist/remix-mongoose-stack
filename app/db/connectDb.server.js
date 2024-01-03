@@ -6,11 +6,11 @@ const { MONGODB_URL, NODE_ENV } = process.env;
 if (!MONGODB_URL) {
   if (NODE_ENV === "production") {
     throw new Error(
-      "Please define the MONGODB_URL environment variable — pointing to your full connection string, including database name."
+      "Please define the MONGODB_URL environment variable — pointing to your full connection string, including database name.",
     );
   } else {
     throw new Error(
-      "Please define the MONGODB_URL environment variable inside an .env file — pointing to your full connection string, including database name."
+      "Please define the MONGODB_URL environment variable inside an .env file — pointing to your full connection string, including database name.",
     );
   }
 }
@@ -45,10 +45,7 @@ export default function connectDb() {
   });
 
   // ...and create a new connection:
-  mongoose.connect(MONGODB_URL, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  });
+  mongoose.connect(MONGODB_URL);
 
   // "Models are always scoped to a single connection."
   // https://mongoosejs.com/docs/connections.html#multiple_connections

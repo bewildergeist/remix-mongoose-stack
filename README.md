@@ -1,6 +1,6 @@
 # A Remix stack with Mongoose integration
 
-This is a basic ["custom stack" template][custom-stack] that integrates [Remix][remix] with [Mongoose][mongoose] (and thereby [MongoDB][mongodb]), and configures [Tailwind CSS][tailwindcss] and [Prettier][prettier].
+This is a basic [custom template][custom-template] that integrates [Remix][remix] with [Mongoose][mongoose] (and thereby [MongoDB][mongodb]), and configures [Tailwind CSS][tailwindcss] and [Prettier][prettier].
 
 ## Installation
 
@@ -10,7 +10,7 @@ Run the following in a terminal (you will be prompted to create a directory to c
 npx create-remix@latest --template bewildergeist/remix-mongoose-stack
 ```
 
-[More information on using custom stacks in Remix][custom-stack].
+[More information on using custom templates in Remix][custom-template].
 
 ## Getting started
 
@@ -32,5 +32,5 @@ This starts your app in development mode, rebuilding assets on file changes.
 [mongoose]: https://mongoosejs.com
 [prettier]: https://prettier.io
 [remix]: https://remix.run
-[custom-stack]: https://remix.run/docs/en/v1/pages/stacks#custom-stacks
-[vs-code-git-init]: https://code.visoualstudio.com/docs/editor/versioncontrol#_initialize-a-repository
+[custom-template]: https://remix.run/docs/en/main/guides/templates
+[vs-code-git-init]: https://code.visualstudio.com/docs/editor/versioncontrol#_initialize-a-repository
