@@ -4,11 +4,10 @@ import {
   isRouteErrorResponse,
 } from "@remix-run/react";
 import { json } from "@remix-run/node";
-import connectDb from "../db/connectDb.server.js";
+import mongoose from "mongoose";
 
 export async function loader({ params }) {
-  const db = connectDb();
-  const book = await db.models.Book.findById(params.bookId);
+  const book = await mongoose.models.Book.findById(params.bookId);
   if (!book) {
     throw new Response(`Couldn't find book with id ${params.bookId}`, {
       status: 404,

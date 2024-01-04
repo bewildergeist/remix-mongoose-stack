@@ -1,9 +1,8 @@
 import { useLoaderData, Link } from "@remix-run/react";
-import connectDb from "../db/connectDb.server.js";
+import mongoose from "mongoose";
 
 export async function loader() {
-  const db = connectDb();
-  const books = await db.models.Book.find();
+  const books = await mongoose.models.Book.find();
   return books;
 }
 

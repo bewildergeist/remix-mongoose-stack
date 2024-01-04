@@ -1,12 +1,11 @@
 import { Form, useActionData } from "@remix-run/react";
 import { redirect, json } from "@remix-run/node";
-import connectDb from "../db/connectDb.server.js";
+import mongoose from "mongoose";
 
 export async function action({ request }) {
   const form = await request.formData();
-  const db = connectDb();
   try {
-    const newBook = await db.models.Book.create({ title: form.get("title") });
+    const newBook = await mongoose.models.Book.create({ title: form.get("title") });
     return redirect(`/books/${newBook._id}`);
   } catch (error) {
     return json(
