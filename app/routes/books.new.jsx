@@ -5,7 +5,8 @@ import mongoose from "mongoose";
 export async function action({ request }) {
   const form = await request.formData();
   try {
-    const newBook = await mongoose.models.Book.create({ title: form.get("title") });
+    const newBook = new mongoose.models.Book({ title: form.get("title") });
+    await newBook.save();
     return redirect(`/books/${newBook._id}`);
   } catch (error) {
     return json(
