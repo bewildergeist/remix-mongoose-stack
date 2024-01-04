@@ -4,59 +4,69 @@ import { models } from "./models.js";
 const { MONGODB_URL, NODE_ENV } = process.env;
 
 if (!MONGODB_URL) {
-  if (NODE_ENV === "production") {
-    throw new Error(
-      "Please define the MONGODB_URL environment variable — pointing to your full connection string, including database name.",
-    );
-  } else {
-    throw new Error(
-      "Please define the MONGODB_URL environment variable inside an .env file — pointing to your full connection string, including database name.",
-    );
-  }
+  const errorMessage = NODE_ENV === "production"
+    ? "Please define the MONGODB_URL environment variable — pointing to your full connection string, including database name."
+    : "Please define the MONGODB_URL environment variable inside an .env file — pointing to your full connection string, including database name.";
+  throw new Error(errorMessage);
 }
 
-// We reuse any existing Mongoose db connection to avoid creating multiple
-// connections in dev mode when Remix "purges the require cache" when reloading
-// on file changes.
+// Call this function from entry.server.jsx. We reuse an existing Mongoose db
+// connection to avoid creating multiple connections in dev mode when Remix
+// "purges the require cache" when reloading on file changes.
 export default function connectDb() {
+
+  // Just for logging purposes:
+  let modelCreationType = "Creating";
+
+  if (NODE_ENV === "development") {
+    // In development mode, we want to overwrite any existing models to ensure
+    // we pick up any changes made in schemas.
+    mongoose.set("overwriteModels", true);
+    // If we have any models already, log out that we're overwriting them:
+    if (Object.keys(mongoose.models).length > 0) {
+      modelCreationType = "Overwriting";
+    }
+  }
+
+  console.log(
+    // E.g. "Mongoose: Creating 2 models (Book, Author)"
+    "Mongoose: %s %d %s (%s)",
+    modelCreationType,
+    models.length,
+    models.length === 1 ? "model" : "models",
+    models.map((model) => model.name).join(", "),
+  );
+
+  // Create or overwrite the models exported from ./models.js:
+  for (const model of models) {
+    mongoose.model(model.name, model.schema, model.collection);
+  }
+
   // Reuse the existing Mongoose connection if we have one...
   // https://mongoosejs.com/docs/api/connection.html#connection_Connection-readyState
-  if (mongoose.connection.readyState > 0) {
-    console.log("Re-using existing Mongoose connection (readyState=%d)", mongoose.connection.readyState);
-    // ...but overwrite all models in development to ensure we pick up any changes made in schemas
-    if (NODE_ENV === "development") {
-      for (const model of models) {
-        if (mongoose.connection.models[model.name]) {
-          console.log("Deleting existing Mongoose model: %s", model.name);
-          mongoose.connection.deleteModel(model.name);
-        }
-        console.log("Creating Mongoose model: %s", model.name);
-        mongoose.connection.model(model.name, model.schema, model.collection);
-      }
-    }
-
-    return mongoose.connection;
+  const readyState = mongoose.connection.readyState;
+  if (readyState > 0) {
+    console.log(
+      "Mongoose: Re-using existing connection (readyState: %d)",
+      readyState,
+    );
+    return
   }
 
   // If no connection exists yet, set up event logging...
-  mongoose.connection.on('connected', () => console.log('Mongoose: connected, NODE_ENV=%s', NODE_ENV));
-  mongoose.connection.on('disconnected', () => console.log('Mongoose: disconnected'));
-  mongoose.connection.on('reconnected', () => console.log('Mongoose: reconnected'));
-  mongoose.connection.on('disconnecting', () => console.log('Mongoose: disconnecting'));
-  mongoose.connection.on('close', () => console.log('Mongoose: close'));
+  // https://mongoosejs.com/docs/connections.html#connection-events
+  mongoose.connection.on("error", (error) => {
+    console.error("Mongoose: error %s", error);
+  });
+
+  for (const event of ["connected", "reconnected", "disconnected", "close"]) {
+    mongoose.connection.on(event, () =>
+      console.log("Mongoose: %s", event),
+    );
+  }
 
   // ...and create a new connection:
   mongoose.connect(MONGODB_URL).catch((error) => {
     console.error(error);
   });
-
-  // "Models are always scoped to a single connection."
-  // https://mongoosejs.com/docs/connections.html#multiple_connections
-  // So we set them up here to avoid overwriting and getting errors in dev mode.
-  for (const model of models) {
-    console.log("Creating Mongoose model: %s", model.name);
-    mongoose.connection.model(model.name, model.schema, model.collection);
-  }
-
-  return mongoose.connection;
 }
