@@ -8,7 +8,7 @@ import { PassThrough } from "node:stream";
 
 import { createReadableStreamFromReadable } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
-import isbot from "isbot";
+import * as isbotModule from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import connectDb from "./db/connectDb.server";
 
@@ -23,7 +23,7 @@ export default function handleRequest(
   responseHeaders,
   remixContext,
 ) {
-  return isbot(request.headers.get("user-agent"))
+  return isBotRequest(request.headers.get("user-agent"))
     ? handleBotRequest(
         request,
         responseStatusCode,
@@ -38,6 +38,27 @@ export default function handleRequest(
       );
 }
 
+// We have some Remix apps in the wild already running with isbot@3 so we need
+// to maintain backwards compatibility even though we want new apps to use
+// isbot@4.  That way, we can ship this as a minor Semver update to @remix-run/dev.
+function isBotRequest(userAgent) {
+  if (!userAgent) {
+    return false;
+  }
+
+  // isbot >= 3.8.0, >4
+  if ("isbot" in isbotModule && typeof isbotModule.isbot === "function") {
+    return isbotModule.isbot(userAgent);
+  }
+
+  // isbot < 3.8.0
+  if ("default" in isbotModule && typeof isbotModule.default === "function") {
+    return isbotModule.default(userAgent);
+  }
+
+  return false;
+}
+
 function handleBotRequest(
   request,
   responseStatusCode,
@@ -45,6 +66,7 @@ function handleBotRequest(
   remixContext,
 ) {
   return new Promise((resolve, reject) => {
+    let shellRendered = false;
     const { pipe, abort } = renderToPipeableStream(
       <RemixServer
         context={remixContext}
@@ -53,6 +75,7 @@ function handleBotRequest(
       />,
       {
         onAllReady() {
+          shellRendered = true;
           const body = new PassThrough();
           const stream = createReadableStreamFromReadable(body);
 
@@ -72,7 +95,12 @@ function handleBotRequest(
         },
         onError(error) {
           responseStatusCode = 500;
-          console.error(error);
+          // Log streaming rendering errors from inside the shell.  Don't log
+          // errors encountered during initial shell rendering since they'll
+          // reject and get logged in handleDocumentRequest.
+          if (shellRendered) {
+            console.error(error);
+          }
         },
       },
     );
@@ -88,6 +116,7 @@ function handleBrowserRequest(
   remixContext,
 ) {
   return new Promise((resolve, reject) => {
+    let shellRendered = false;
     const { pipe, abort } = renderToPipeableStream(
       <RemixServer
         context={remixContext}
@@ -96,6 +125,7 @@ function handleBrowserRequest(
       />,
       {
         onShellReady() {
+          shellRendered = true;
           const body = new PassThrough();
           const stream = createReadableStreamFromReadable(body);
 
@@ -114,8 +144,13 @@ function handleBrowserRequest(
           reject(error);
         },
         onError(error) {
-          console.error(error);
           responseStatusCode = 500;
+          // Log streaming rendering errors from inside the shell.  Don't log
+          // errors encountered during initial shell rendering since they'll
+          // reject and get logged in handleDocumentRequest.
+          if (shellRendered) {
+            console.error(error);
+          }
         },
       },
     );

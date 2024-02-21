@@ -4,9 +4,10 @@ import { models } from "./models.js";
 const { MONGODB_URL, NODE_ENV } = process.env;
 
 if (!MONGODB_URL) {
-  const errorMessage = NODE_ENV === "production"
-    ? "Please define the MONGODB_URL environment variable — pointing to your full connection string, including database name."
-    : "Please define the MONGODB_URL environment variable inside an .env file — pointing to your full connection string, including database name.";
+  const errorMessage =
+    NODE_ENV === "production"
+      ? "Please define the MONGODB_URL environment variable — pointing to your full connection string, including database name."
+      : "Please define the MONGODB_URL environment variable inside an .env file — pointing to your full connection string, including database name.";
   throw new Error(errorMessage);
 }
 
@@ -14,7 +15,6 @@ if (!MONGODB_URL) {
 // connection to avoid creating multiple connections in dev mode when Remix
 // "purges the require cache" when reloading on file changes.
 export default function connectDb() {
-
   // Just for logging purposes:
   let modelCreationType = "Creating";
 
@@ -50,7 +50,7 @@ export default function connectDb() {
       "Mongoose: Re-using existing connection (readyState: %d)",
       readyState,
     );
-    return
+    return;
   }
 
   // If no connection exists yet, set up event logging...
@@ -60,9 +60,7 @@ export default function connectDb() {
   });
 
   for (const event of ["connected", "reconnected", "disconnected", "close"]) {
-    mongoose.connection.on(event, () =>
-      console.log("Mongoose: %s", event),
-    );
+    mongoose.connection.on(event, () => console.log("Mongoose: %s", event));
   }
 
   // ...and create a new connection:
